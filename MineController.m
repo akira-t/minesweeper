@@ -77,7 +77,7 @@ const ushort diffMines[] = {8, 30, 60};
 - (void) changeDiff: (id) sender {
 	//[self setDifficulty: [[sender selectedItem] tag]];
 	
-	[self setDifficulty: [sender tag]];
+	[self setDifficulty: [sender indexOfItem:[sender selectedItem]]];
 	
 	NSSize oldSize = [fieldMatrix frame].size;
 	

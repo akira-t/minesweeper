@@ -32,13 +32,13 @@ typedef enum _difficulty {EASY, STANDARD, HARD} difficulty;
 
 - (void) awakeFromNib;
 - (void) clockTimer: (NSTimer *) timer;
-- (void) rightClicked: (id) sender;
+- (IBAction) rightClicked: (id) sender;
 
-- (void) changeDiff: (id) sender;
-- (void) fieldPress: (id) sender;
-- (void) newGame: (id) sender;
+- (IBAction) changeDiff: (id) sender;
+- (IBAction) fieldPress: (id) sender;
+- (IBAction) newGame: (id) sender;
 
-- (void) handlePress: (id) sender withRightClick: (BOOL) rightClick;
+- (IBAction) handlePress: (id) sender withRightClick: (BOOL) rightClick;
 - (void) updateDisplay;
 - (void) setDifficulty: (difficulty) diffId;
 

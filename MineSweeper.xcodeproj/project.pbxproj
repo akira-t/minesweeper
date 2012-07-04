@@ -18,7 +18,6 @@
 		01DBF0B70FA6ACC70055DF6F /* flag_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 01DBF0B60FA6ACC70055DF6F /* flag_red.png */; };
 		01DBF0BC0FA6ADE70055DF6F /* not_bomb.png in Resources */ = {isa = PBXBuildFile; fileRef = 01DBF0BB0FA6ADE70055DF6F /* not_bomb.png */; };
 		01DBF0C40FA6AF0D0055DF6F /* is_bomb.png in Resources */ = {isa = PBXBuildFile; fileRef = 01DBF0C30FA6AF0D0055DF6F /* is_bomb.png */; };
-		01FB2EB20FAA679300C2BB84 /* CustomMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 01FB2EB10FAA679300C2BB84 /* CustomMatrix.m */; };
 		01FFE2620FB15C4E00BE1A9F /* bomb_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 01FFE2610FB15C4E00BE1A9F /* bomb_icon.icns */; };
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -41,8 +40,6 @@
 		01DBF0B60FA6ACC70055DF6F /* flag_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flag_red.png; sourceTree = "<group>"; };
 		01DBF0BB0FA6ADE70055DF6F /* not_bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = not_bomb.png; sourceTree = "<group>"; };
 		01DBF0C30FA6AF0D0055DF6F /* is_bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = is_bomb.png; sourceTree = "<group>"; };
-		01FB2EB00FAA679300C2BB84 /* CustomMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMatrix.h; sourceTree = "<group>"; };
-		01FB2EB10FAA679300C2BB84 /* CustomMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMatrix.m; sourceTree = "<group>"; };
 		01FFE2610FB15C4E00BE1A9F /* bomb_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = bomb_icon.icns; sourceTree = "<group>"; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -77,8 +74,6 @@
 				0167608A0FA215A000F2883E /* MineField.m */,
 				016760C60FA21C9F00F2883E /* MineSquare.h */,
 				016760C70FA21C9F00F2883E /* MineSquare.m */,
-				01FB2EB00FAA679300C2BB84 /* CustomMatrix.h */,
-				01FB2EB10FAA679300C2BB84 /* CustomMatrix.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -186,7 +181,11 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MineSweeper" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* MineSweeper */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -226,7 +225,6 @@
 				013924750FA1834B000CF627 /* MineController.m in Sources */,
 				0167608B0FA215A000F2883E /* MineField.m in Sources */,
 				016760C80FA21C9F00F2883E /* MineSquare.m in Sources */,
-				01FB2EB20FAA679300C2BB84 /* CustomMatrix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -273,6 +272,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -294,7 +294,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -307,7 +307,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};
