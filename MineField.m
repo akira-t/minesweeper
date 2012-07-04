@@ -37,6 +37,8 @@
 
 // Recurse through mine squares showing empty areas after a square is stepped on
 - (void) recurseFromRow: (ushort) row column: (ushort) column {
+	if (column < 0 || column >= perimeterSize || row < 0 || row >= perimeterSize) return;
+	
 	MineSquare* sq = [self squareAtRow: row column: column];
 	
 	//NSLog(@"Checking %d %d", row, column);
@@ -59,10 +61,14 @@
 	
 	[sq setRecurseId: recurseId];
 	
-	if (column - 1 >= 0) [self recurseFromRow: row column: column - 1];
-	if (column + 1 < perimeterSize) [self recurseFromRow: row column: column + 1];
-	if (row - 1 >= 0) [self recurseFromRow: row - 1 column: column];
-	if (row + 1 < perimeterSize) [self recurseFromRow: row + 1 column: column];
+	[self recurseFromRow: row column: column - 1];
+	[self recurseFromRow: row column: column + 1];
+	[self recurseFromRow: row - 1 column: column];
+	[self recurseFromRow: row + 1 column: column];
+	[self recurseFromRow: row - 1 column: column -1];
+	[self recurseFromRow: row - 1 column: column +1];
+	[self recurseFromRow: row + 1 column: column -1];
+	[self recurseFromRow: row + 1 column: column +1];
 }
 
 // Toggle flagged value
