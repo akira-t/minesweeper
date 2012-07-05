@@ -37,8 +37,10 @@ typedef enum _difficulty {EASY, STANDARD, HARD} difficulty;
 - (IBAction) changeDiff: (id) sender;
 - (IBAction) fieldPress: (id) sender;
 - (IBAction) newGame: (id) sender;
+- (IBAction) proceed:(id)sender;
 
 - (IBAction) handlePress: (id) sender withRightClick: (BOOL) rightClick;
+- (void) handlePressAtRow:(ushort)row Column:(ushort)col Eventflags:(int)eventflags withRightClick: (BOOL) rightClick;
 - (void) updateDisplay;
 - (void) setDifficulty: (difficulty) diffId;
 

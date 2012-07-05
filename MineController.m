@@ -81,6 +81,27 @@ const ushort diffMines[] = {8, 30, 60};
 	[self setDifficulty: gameDiff];
 }
 
+- (void) proceed:(id)sender {
+	for (int i = 0; i < [field perimeterSize]; i++) {
+		for (int j = 0; j < [field perimeterSize]; j++) {
+			MineSquare* sq = [field squareAtRow: i column: j];
+			if ((![sq empty]) && (![sq flagged]) && [sq probability]>0.999) {
+				[self handlePressAtRow:i Column:j Eventflags:0 withRightClick:YES];
+				return;
+			}
+		}
+	}
+	for (int i = 0; i < [field perimeterSize]; i++) {
+		for (int j = 0; j < [field perimeterSize]; j++) {
+			MineSquare* sq = [field squareAtRow: i column: j];
+			if ((![sq empty]) && (![sq flagged]) && [sq probability]<0.001) {
+				[self handlePressAtRow:i Column:j Eventflags:0 withRightClick:NO];
+				return;
+			}
+		}
+	}
+}
+
 // Difficulty selected from drop down list
 - (void) changeDiff: (id) sender {
 	//[self setDifficulty: [[sender selectedItem] tag]];
@@ -129,12 +150,15 @@ const ushort diffMines[] = {8, 30, 60};
 
 // Handle left click, right click, and control click
 - (void) handlePress: (id) sender withRightClick: (BOOL) rightClick {
-	if ([field detonated] || [field deactived]) return;
-	
 	int eventflags = [[[sender window] currentEvent] modifierFlags];
 	ushort row = [sender selectedRow];
 	ushort col = [sender selectedColumn];
-	
+	[self handlePressAtRow:row Column:col Eventflags:eventflags withRightClick: (BOOL) rightClick];
+}
+
+- (void) handlePressAtRow:(ushort)row Column:(ushort)col Eventflags:(int)eventflags withRightClick: (BOOL) rightClick {
+
+	if ([field detonated] || [field deactived]) return;
 	if (gameStartTime == nil)
 		gameStartTime = [[NSDate alloc] init];
 	
@@ -162,6 +186,8 @@ const ushort diffMines[] = {8, 30, 60};
 	
 	[self updateDisplay];
 }
+
+
 
 // Refresh the field matrix, showing any changes to the model
 - (void) updateDisplay {
@@ -196,6 +222,7 @@ const ushort diffMines[] = {8, 30, 60};
 				} else if ([sq flagged]) {
 					[button setImage: flagImage];
 					[button setEnabled: YES];
+					[button setTitle: @""];
 				} else if ([sq probability]<0.001) {
 					[button setEnabled: YES];
 					[button setImage: nil];

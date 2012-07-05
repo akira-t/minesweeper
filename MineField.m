@@ -217,7 +217,7 @@
 		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
 			MineSquare* adjSq = [self squareAtRow: testRow(row,i) column: testCol(column,i)];
 			if (![adjSq flagged]&&![adjSq empty]) {
-				if (probability>[adjSq probability]||probability==0)
+				if (probability>[adjSq probability]||probability<0.001)
 					[adjSq setProbability:probability];
 			}
 		}

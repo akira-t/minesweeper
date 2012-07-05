@@ -1,0 +1,7 @@
+winmine.gif
+build
+*.mode[123]v3
+*.pbxuser
+.DS_Store
+*.xcodeproj/xcuserdata
+*.xcodeproj/*.xcworkspace
