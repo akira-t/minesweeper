@@ -2,6 +2,8 @@
 #import "MineSquare.h"
 #include <time.h>
 
+#define testRow(row,i) (row-1+i/3)
+#define testCol(col,i) (col-1+i%3)
 
 @implementation MineField
 
@@ -13,6 +15,22 @@
 // Return the square at specified row and column
 - (MineSquare*) squareAtRow: (ushort) row column: (ushort) column {
 	return [[squares objectAtIndex: row] objectAtIndex: column];
+}
+
+- (void) updateRemainAtRow: (ushort) row column: (ushort) column {
+	MineSquare *sq = [self squareAtRow:row column:column];
+	if (![sq adjacent]) return;
+	int adjRemain=[sq adjacent];
+	for (int i=0; i<9; i++) {
+		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			// set adjRemain to adjacent cells
+			MineSquare* adjSq = [self squareAtRow: testRow(row,i) column: testCol(column,i)];
+			if ([adjSq flagged]) {
+				adjRemain--;
+			}
+		}
+	}
+	[sq setAdjRemain:adjRemain];
 }
 
 // Step on a square: Lose or recurse
@@ -56,6 +74,12 @@
 	}
 	if ([sq adjacent]) {
 		//NSLog(@"Found adj at: %d %d", row, column);
+		[self updateRemainAtRow:row column:column];
+		for (int i=0; i<9; i++) {
+			if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+				[self updateProbabilityAroundRow:testRow(row,i) column:testCol(column,i)];
+			}
+		}
 		return;
 	}
 	
@@ -81,6 +105,20 @@
 	else if (minesRemaining >= 1) --minesRemaining;
 	
 	[sq setFlagged: flagValue];
+
+	for (int i=0; i<9; i++) {
+		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			// set adjRemain to adjacent cells
+			[self updateRemainAtRow:testRow(row,i) column:testCol(column,i)];
+		}
+	}
+	
+	for (int i=0; i<9; i++) {
+		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			[self updateProbabilityAroundRow:testRow(row,i) column:testCol(column,i)];
+		}
+	}
+	
 }
 
 // Resize the board and place mines
@@ -105,7 +143,12 @@
 		NSMutableArray* arr = [[NSMutableArray alloc] init];
 		
 		for (j = 0; j < size; j++) {
-			[arr addObject: [[MineSquare alloc] init]];
+			// calculate probability of isMine
+			float p=((float)mineCount)/size/size;
+			MineSquare* sq = [[MineSquare alloc] init];
+			[sq setProbability:p];
+			
+			[arr addObject: sq];
 		}
 		
 		[squares addObject: arr];
@@ -131,6 +174,7 @@
 						
 						NSLog(@"Added adj at row: %d col: %d", i + x, j + y);
 						MineSquare* adjSq = [self squareAtRow: i + x column: j + y];
+						[adjSq setAdjRemain: [adjSq adjRemain] + 1];
 						[adjSq setAdjacent: [adjSq adjacent] + 1];
 					}
 				}
@@ -146,6 +190,37 @@
 			i++;
 		}
 		if (i >= size) i = 0;
+	}
+}
+
+- (void) updateProbabilityAroundRow: (ushort) row column: (ushort) column
+{
+	ushort uncertainSquares=8;
+	MineSquare* sq = [self squareAtRow:row column:column];
+	if (![sq empty]||[sq flagged]) {
+		return;
+	}
+	for (int i=0; i<9; i++) {
+		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			MineSquare* adjSq = [self squareAtRow: testRow(row,i) column: testCol(column,i)];
+			if ([adjSq flagged]||[adjSq empty])
+				uncertainSquares--;
+		}
+	}
+	float probability = ((float)[sq adjRemain])/uncertainSquares;
+	if (probability>0.999)
+		probability = 1;
+	else if(probability<0.001)
+		probability = 0;
+	
+	for (int i=0; i<9; i++) {
+		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			MineSquare* adjSq = [self squareAtRow: testRow(row,i) column: testCol(column,i)];
+			if (![adjSq flagged]&&![adjSq empty]) {
+				if (probability>[adjSq probability]||probability==0)
+					[adjSq setProbability:probability];
+			}
+		}
 	}
 }
 

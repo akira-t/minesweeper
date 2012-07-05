@@ -25,4 +25,6 @@ typedef unsigned short ushort;
 - (void) toggleFlagAtRow: (ushort) row column: (ushort) column;
 - (void) setSize: (ushort) size andMineCount: (ushort) mineCount;
 
+- (void) updateProbabilityAroundRow: (ushort) row column: (ushort) column;
+
 @end

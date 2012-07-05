@@ -65,6 +65,14 @@ const ushort diffMines[] = {8, 30, 60};
 	
 	[field setSize: diffSizes[diffId] andMineCount: diffMines[diffId]];
 	
+//	for (int i = 0; i < [field perimeterSize]; i++) {
+//		for (int j = 0; j < [field perimeterSize]; j++) {
+//			MineSquare* sq = [field squareAtRow: i column: j];
+//			NSButtonCell* button = [fieldMatrix cellAtRow: i column: j];
+//			[button setShowsBorderOnlyWhileMouseInside:YES];
+//		}
+//	}
+	
 	[self updateDisplay];
 }
 
@@ -188,17 +196,46 @@ const ushort diffMines[] = {8, 30, 60};
 				} else if ([sq flagged]) {
 					[button setImage: flagImage];
 					[button setEnabled: YES];
+				} else if ([sq probability]<0.001) {
+					[button setEnabled: YES];
+					[button setImage: nil];
+					NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys:
+											 [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.5], NSForegroundColorAttributeName, 
+											 [NSFont boldSystemFontOfSize:16], NSFontAttributeName,
+											 nil];
+					NSAttributedString *attstr = [[NSAttributedString alloc] initWithString:@"" attributes: txtDict];;
+					[button setAttributedTitle:attstr];
+				} else if ([sq probability]>0.999) {
+					[button setEnabled: YES];
+					[button setImage: nil];
+					NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys:
+											 [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.8], NSForegroundColorAttributeName, 
+											 [NSFont boldSystemFontOfSize:16], NSFontAttributeName,
+											 nil];
+					NSAttributedString *attstr = [[NSAttributedString alloc] initWithString:@"" attributes: txtDict];;
+					[button setAttributedTitle:attstr];
 				} else {
 					[button setTitle: @""];
 					[button setEnabled: YES];
 					[button setImage: nil];
+					NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys:
+											 [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.5*[sq probability]], NSForegroundColorAttributeName, 
+											 [NSFont boldSystemFontOfSize:16], NSFontAttributeName,
+											 nil];
+					NSAttributedString *attstr = [[NSAttributedString alloc] initWithString:@"" attributes: txtDict];;
+					[button setAttributedTitle:attstr];
 				}
 			} else if ([sq flagged] && [sq isMine]) {
 				[button setImage: isMineImage];
+				[button setTitle: @""];
 			} else if ([sq flagged] && ![sq isMine]) {
 				[button setImage: notMineImage];
+				[button setTitle: @""];
 			} else if ([sq isMine]) {
 				[button setImage: mineImage];
+				[button setTitle: @""];
+			} else {
+				[button setTitle: @""];
 			}
 		}
 	}

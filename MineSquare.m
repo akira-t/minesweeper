@@ -6,6 +6,8 @@
 @synthesize flagged;
 @synthesize empty;
 @synthesize adjacent;
+@synthesize adjRemain;
 @synthesize recurseId;
+@synthesize probability;
 
 @end
