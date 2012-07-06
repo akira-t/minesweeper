@@ -5,6 +5,9 @@
 #define testRow(row,i) (row-1+i/3)
 #define testCol(col,i) (col-1+i%3)
 
+#define isZeroProb(p) (p < 0.001)
+#define isOneProb(p) (p > 0.999)
+
 @implementation MineField
 
 @synthesize perimeterSize;
@@ -76,7 +79,7 @@
 		//NSLog(@"Found adj at: %d %d", row, column);
 		[self updateRemainAtRow:row column:column];
 		for (int i=0; i<9; i++) {
-			if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
+			if (testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
 				[self updateProbabilityAroundRow:testRow(row,i) column:testCol(column,i)];
 			}
 		}
@@ -208,16 +211,16 @@
 		}
 	}
 	float probability = ((float)[sq adjRemain])/uncertainSquares;
-	if (probability>0.999)
+	if (isOneProb(probability))
 		probability = 1;
-	else if(probability<0.001)
+	else if(isZeroProb(probability))
 		probability = 0;
 	
 	for (int i=0; i<9; i++) {
 		if (i!=4 && testRow(row,i)>=0 && testRow(row,i)<perimeterSize && testCol(column,i)>=0 && testCol(column,i)<perimeterSize) {
 			MineSquare* adjSq = [self squareAtRow: testRow(row,i) column: testCol(column,i)];
 			if (![adjSq flagged]&&![adjSq empty]) {
-				if (probability>[adjSq probability]||probability<0.001)
+				if ((!isZeroProb([adjSq probability])&&probability>[adjSq probability])||isZeroProb(probability))
 					[adjSq setProbability:probability];
 			}
 		}

@@ -1,6 +1,9 @@
 #import "MineController.h"
 #import "MineField.h"
 
+#define isZeroProb(p) (p < 0.001)
+#define isOneProb(p) (p > 0.999)
+
 const ushort diffSizes[] = {8, 15, 20};
 const ushort diffMines[] = {8, 30, 60};
 
@@ -85,7 +88,7 @@ const ushort diffMines[] = {8, 30, 60};
 	for (int i = 0; i < [field perimeterSize]; i++) {
 		for (int j = 0; j < [field perimeterSize]; j++) {
 			MineSquare* sq = [field squareAtRow: i column: j];
-			if ((![sq empty]) && (![sq flagged]) && [sq probability]>0.999) {
+			if ((![sq empty]) && (![sq flagged]) && isOneProb([sq probability])) {
 				[self handlePressAtRow:i Column:j Eventflags:0 withRightClick:YES];
 				return;
 			}
@@ -94,7 +97,7 @@ const ushort diffMines[] = {8, 30, 60};
 	for (int i = 0; i < [field perimeterSize]; i++) {
 		for (int j = 0; j < [field perimeterSize]; j++) {
 			MineSquare* sq = [field squareAtRow: i column: j];
-			if ((![sq empty]) && (![sq flagged]) && [sq probability]<0.001) {
+			if ((![sq empty]) && (![sq flagged]) && isZeroProb([sq probability])) {
 				[self handlePressAtRow:i Column:j Eventflags:0 withRightClick:NO];
 				return;
 			}
@@ -223,7 +226,7 @@ const ushort diffMines[] = {8, 30, 60};
 					[button setImage: flagImage];
 					[button setEnabled: YES];
 					[button setTitle: @""];
-				} else if ([sq probability]<0.001) {
+				} else if (isZeroProb([sq probability])) {
 					[button setEnabled: YES];
 					[button setImage: nil];
 					NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -232,7 +235,7 @@ const ushort diffMines[] = {8, 30, 60};
 											 nil];
 					NSAttributedString *attstr = [[NSAttributedString alloc] initWithString:@"" attributes: txtDict];;
 					[button setAttributedTitle:attstr];
-				} else if ([sq probability]>0.999) {
+				} else if (isOneProb([sq probability])) {
 					[button setEnabled: YES];
 					[button setImage: nil];
 					NSDictionary *txtDict = [NSDictionary dictionaryWithObjectsAndKeys:
