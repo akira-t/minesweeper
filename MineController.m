@@ -85,6 +85,9 @@ const ushort diffMines[] = {8, 30, 60};
 }
 
 - (void) proceed:(id)sender {
+	if ([field detonated]) return;
+	
+	//
 	for (int i = 0; i < [field perimeterSize]; i++) {
 		for (int j = 0; j < [field perimeterSize]; j++) {
 			MineSquare* sq = [field squareAtRow: i column: j];
@@ -99,6 +102,16 @@ const ushort diffMines[] = {8, 30, 60};
 			MineSquare* sq = [field squareAtRow: i column: j];
 			if ((![sq empty]) && (![sq flagged]) && isZeroProb([sq probability])) {
 				[self handlePressAtRow:i Column:j Eventflags:0 withRightClick:NO];
+				return;
+			}
+		}
+	}
+	for (int i = 0; i < [field perimeterSize]; i++) {
+		for (int j = 0; j < [field perimeterSize]; j++) {
+			MineSquare* sq = [field squareAtRow: i column: j];
+			if (![sq empty]&&![sq flagged]) {
+				[field updateProbabilityOfAreaIncludingRow:i column:j];
+				[self updateDisplay];
 				return;
 			}
 		}

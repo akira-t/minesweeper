@@ -227,4 +227,23 @@
 	}
 }
 
+- (void) updateProbabilityOfAreaIncludingRow: (ushort) row column: (ushort) column
+{
+	NSMutableArray *delOmega = [NSArray array];
+	return;
+
+	
+- (void) recurseFromCoordinate: (coordinate) cell
+{
+	// 壁を発見してそれを右手に辿る
+	int i;
+	for (i=0; i<9; i++) {
+		if (i!=4 && testRow(cell.row,i)>=0 && testRow(cell.row,i)<perimeterSize && testCol(cell.col,i)>=0 && testCol(cell.col,i)<perimeterSize) {
+			MineSquare *sq = [self squareAtRow:testRow(cell.row,i) column:testCol(cell.col,i)];
+			if ([sq empty]&&[sq adjacent])
+				break;
+		}
+	}
+}
+
 @end

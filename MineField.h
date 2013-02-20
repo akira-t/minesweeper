@@ -3,6 +3,11 @@
 
 typedef unsigned short ushort;
 
+typedef struct {
+	int row;
+	int col;
+} coordinate;
+
 @interface MineField : NSObject {
 	NSMutableArray *squares;
 	
@@ -26,5 +31,7 @@ typedef unsigned short ushort;
 - (void) setSize: (ushort) size andMineCount: (ushort) mineCount;
 
 - (void) updateProbabilityAroundRow: (ushort) row column: (ushort) column;
+- (void) updateProbabilityOfAreaIncludingRow: (ushort) row column: (ushort) column;
+- (void) recurseFromCoordinate: (coordinate) cell;
 
 @end
