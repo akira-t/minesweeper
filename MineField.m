@@ -231,7 +231,7 @@
 {
 	NSMutableArray *delOmega = [NSArray array];
 	return;
-
+}
 	
 - (void) recurseFromCoordinate: (coordinate) cell
 {
